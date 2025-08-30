@@ -1,0 +1,262 @@
+// Sistema de Control de Inventario - Laboratorio TIC
+// Esquema de Base de Datos en formato DBML
+
+Table usuarios {
+  id_usuario int [pk, increment]
+  nombre varchar(100) [not null]
+  apellidos varchar(100) [not null]
+  email varchar(150) [not null, unique]
+  username varchar(50) [not null, unique]
+  password_hash varchar(255) [not null]
+  rol enum('admin', 'profesor', 'estudiante', 'tecnico') [default: 'estudiante']
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamp [default: `CURRENT_TIMESTAMP`]
+  activo boolean [default: true]
+  
+  indexes {
+    email [name: 'idx_email']
+    username [name: 'idx_username']
+    rol [name: 'idx_rol']
+  }
+}
+
+Table categorias {
+  id_categoria int [pk, increment]
+  nombre varchar(100) [not null, unique]
+  descripcion text
+  codigo varchar(20) [not null, unique]
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  activo boolean [default: true]
+  
+  indexes {
+    codigo [name: 'idx_codigo']
+  }
+}
+
+Table ubicaciones {
+  id_ubicacion int [pk, increment]
+  nombre varchar(100) [not null, unique]
+  descripcion text
+  codigo_aula varchar(20) [not null, unique]
+  capacidad int [default: 0]
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  activo boolean [default: true]
+  
+  indexes {
+    codigo_aula [name: 'idx_codigo_aula']
+  }
+}
+
+Table proveedores {
+  id_proveedor int [pk, increment]
+  nombre_empresa varchar(150) [not null, unique]
+  contacto_principal varchar(100)
+  telefono varchar(20)
+  email varchar(150)
+  direccion text
+  ruc_dni varchar(20) [unique]
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  activo boolean [default: true]
+  
+  indexes {
+    ruc_dni [name: 'idx_ruc_dni']
+    nombre_empresa [name: 'idx_nombre_empresa']
+  }
+}
+
+Table equipos {
+  id_equipo int [pk, increment]
+  codigo_inventario varchar(50) [not null, unique]
+  nombre varchar(150) [not null]
+  marca varchar(100)
+  modelo varchar(100)
+  numero_serie varchar(150) [unique]
+  especificaciones text
+  estado enum('excelente', 'bueno', 'regular', 'malo', 'inoperativo') [default: 'bueno']
+  valor_compra decimal(10,2)
+  fecha_compra date
+  fecha_garantia date
+  observaciones text
+  id_categoria int [not null]
+  id_ubicacion int [not null]
+  id_proveedor int
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamp [default: `CURRENT_TIMESTAMP`]
+  activo boolean [default: true]
+  
+  indexes {
+    codigo_inventario [name: 'idx_codigo_inventario']
+    numero_serie [name: 'idx_numero_serie']
+    estado [name: 'idx_estado']
+    id_categoria [name: 'idx_categoria']
+    id_ubicacion [name: 'idx_ubicacion']
+  }
+}
+
+Table componentes {
+  id_componente int [pk, increment]
+  codigo varchar(50) [not null, unique]
+  nombre varchar(150) [not null]
+  descripcion text
+  marca varchar(100)
+  modelo varchar(100)
+  tipo enum('procesador', 'memoria', 'disco', 'tarjeta', 'cable', 'accesorio') [not null]
+  estado enum('excelente', 'bueno', 'regular', 'malo', 'inoperativo') [default: 'bueno']
+  stock_actual int [default: 0]
+  stock_minimo int [default: 0]
+  precio_unitario decimal(8,2)
+  id_categoria int [not null]
+  id_proveedor int
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamp [default: `CURRENT_TIMESTAMP`]
+  activo boolean [default: true]
+  
+  indexes {
+    codigo [name: 'idx_codigo']
+    tipo [name: 'idx_tipo']
+    (stock_actual, stock_minimo) [name: 'idx_stock_bajo']
+  }
+}
+
+Table mantenimientos {
+  id_mantenimiento int [pk, increment]
+  id_equipo int [not null]
+  id_usuario int [not null]
+  tipo enum('preventivo', 'correctivo', 'emergencia') [not null]
+  fecha_mantenimiento date [not null]
+  descripcion_trabajo text [not null]
+  observaciones text
+  estado enum('programado', 'en_proceso', 'completado', 'cancelado') [default: 'programado']
+  costo decimal(8,2) [default: 0.00]
+  id_tecnico int
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamp [default: `CURRENT_TIMESTAMP`]
+  
+  indexes {
+    fecha_mantenimiento [name: 'idx_fecha_mantenimiento']
+    estado [name: 'idx_estado']
+    id_equipo [name: 'idx_equipo']
+  }
+}
+
+Table prestamos {
+  id_prestamo int [pk, increment]
+  id_usuario_solicitante int [not null]
+  id_usuario_autoriza int [not null]
+  fecha_prestamo timestamp [default: `CURRENT_TIMESTAMP`]
+  fecha_devolucion_programada timestamp [not null]
+  fecha_devolucion_real timestamp
+  estado enum('activo', 'devuelto', 'vencido', 'perdido') [default: 'activo']
+  observaciones_salida text
+  observaciones_devolucion text
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamp [default: `CURRENT_TIMESTAMP`]
+  
+  indexes {
+    estado [name: 'idx_estado']
+    fecha_devolucion_programada [name: 'idx_fecha_devolucion']
+    id_usuario_solicitante [name: 'idx_usuario_solicitante']
+  }
+}
+
+Table detalle_prestamos {
+  id_detalle int [pk, increment]
+  id_prestamo int [not null]
+  id_equipo int [not null]
+  estado_equipo_salida enum('excelente', 'bueno', 'regular', 'malo') [not null]
+  estado_equipo_devolucion enum('excelente', 'bueno', 'regular', 'malo', 'danado', 'perdido')
+  observaciones text
+  
+  indexes {
+    id_equipo [name: 'idx_equipo']
+    (id_prestamo, id_equipo) [unique, name: 'unique_prestamo_equipo']
+  }
+}
+
+Table movimientos_stock {
+  id_movimiento int [pk, increment]
+  id_componente int [not null]
+  id_usuario int [not null]
+  tipo_movimiento enum('entrada', 'salida', 'ajuste', 'perdida', 'dano') [not null]
+  cantidad int [not null]
+  stock_anterior int [not null]
+  stock_nuevo int [not null]
+  precio_unitario decimal(8,2)
+  motivo varchar(255)
+  observaciones text
+  fecha_movimiento timestamp [default: `CURRENT_TIMESTAMP`]
+  
+  indexes {
+    fecha_movimiento [name: 'idx_fecha_movimiento']
+    tipo_movimiento [name: 'idx_tipo_movimiento']
+    id_componente [name: 'idx_componente']
+  }
+}
+
+Table reportes_incidencias {
+  id_incidencia int [pk, increment]
+  id_equipo int [not null]
+  id_usuario_reporta int [not null]
+  id_usuario_asignado int
+  titulo varchar(255) [not null]
+  descripcion text [not null]
+  prioridad enum('baja', 'media', 'alta', 'critica') [default: 'media']
+  estado enum('abierto', 'en_proceso', 'resuelto', 'cerrado') [default: 'abierto']
+  fecha_reporte timestamp [default: `CURRENT_TIMESTAMP`]
+  fecha_resolucion timestamp
+  solucion text
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamp [default: `CURRENT_TIMESTAMP`]
+  
+  indexes {
+    estado [name: 'idx_estado']
+    prioridad [name: 'idx_prioridad']
+    fecha_reporte [name: 'idx_fecha_reporte']
+    id_equipo [name: 'idx_equipo']
+  }
+}
+
+Table auditorias {
+  id_auditoria int [pk, increment]
+  id_usuario int [not null]
+  tabla_afectada varchar(100) [not null]
+  accion enum('INSERT', 'UPDATE', 'DELETE') [not null]
+  datos_anteriores json
+  datos_nuevos json
+  ip_address varchar(45)
+  timestamp timestamp [default: `CURRENT_TIMESTAMP`]
+  
+  indexes {
+    (tabla_afectada, accion) [name: 'idx_tabla_accion']
+    timestamp [name: 'idx_timestamp']
+    id_usuario [name: 'idx_usuario']
+  }
+}
+
+// Relaciones entre tablas
+
+Ref: equipos.id_categoria > categorias.id_categoria
+Ref: equipos.id_ubicacion > ubicaciones.id_ubicacion
+Ref: equipos.id_proveedor > proveedores.id_proveedor
+
+Ref: componentes.id_categoria > categorias.id_categoria
+Ref: componentes.id_proveedor > proveedores.id_proveedor
+
+Ref: mantenimientos.id_equipo > equipos.id_equipo
+Ref: mantenimientos.id_usuario > usuarios.id_usuario
+Ref: mantenimientos.id_tecnico > usuarios.id_usuario
+
+Ref: prestamos.id_usuario_solicitante > usuarios.id_usuario
+Ref: prestamos.id_usuario_autoriza > usuarios.id_usuario
+
+Ref: detalle_prestamos.id_prestamo > prestamos.id_prestamo [delete: cascade]
+Ref: detalle_prestamos.id_equipo > equipos.id_equipo
+
+Ref: movimientos_stock.id_componente > componentes.id_componente
+Ref: movimientos_stock.id_usuario > usuarios.id_usuario
+
+Ref: reportes_incidencias.id_equipo > equipos.id_equipo
+Ref: reportes_incidencias.id_usuario_reporta > usuarios.id_usuario
+Ref: reportes_incidencias.id_usuario_asignado > usuarios.id_usuario
+
+Ref: auditorias.id_usuario > usuarios.id_usuario
