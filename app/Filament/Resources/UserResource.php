@@ -113,4 +113,9 @@ class UserResource extends Resource
     {
         return __('Usuarios');
     }
+       public static function getNavigationGroup(): ?string
+    {
+
+        return 'Seguridad';
+    }
 }
