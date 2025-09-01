@@ -13,6 +13,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use PhpParser\Node\Expr\Cast\String_;
+use Filament\Forms\Components\Card;
+use Filament\Tables\Filters\SelectFilter;
 
 class CategoriasResource extends Resource
 {
@@ -24,21 +27,34 @@ class CategoriasResource extends Resource
     {
         return $form
             ->schema([
+                 Card::make('Llene los campos de la categoría')
                 //
+                ->schema([
+                         Forms\Components\Grid::make(2)
+                    ->schema([
                 Forms\Components\TextInput::make('nombre')
                     ->label('Nombre')
+                    ->placeholder('Ingrese el nombre de la categoría')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('descripcion')
                     ->label('Descripción')
+                    ->placeholder('Ingrese la descripción de la categoría')
                     ->required()
-                    ->maxLength(500),
-                Forms\Components\Select::make('codigo')
-                    ->label('Categoría Padre')
-                    ->relationship('parent', 'nombre')
-                    ->searchable()
-                    ->nullable(),
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('codigo')
+                    ->label('Código')
+                    ->placeholder('Ingrese el código de la categoría')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Toggle::make('activo')
+                    ->label('Activo')
+                    ->default(true),
+
+                         ])
+                 ])
             ]);
+        
     }
 
     public static function table(Table $table): Table
@@ -46,7 +62,7 @@ class CategoriasResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('id')
+                Tables\Columns\TextColumn::make('id_categoria')
                     ->label('ID')
                     ->sortable(),
                     Tables\Columns\TextColumn::make('nombre')
@@ -56,17 +72,30 @@ class CategoriasResource extends Resource
                     ->label('Descripción')
                     ->sortable(),
                     Tables\Columns\TextColumn::make('codigo')
-                    ->label('Categoría Padre')
+                    ->label('Código')
+                    ->sortable(),
+                    Tables\Columns\BooleanColumn::make('activo')
+                    ->label('Activo')
                     ->sortable(),
                 ])
             ->filters([
                 //
+                SelectFilter::make('activo')
+                    ->label('Activo')
+                    ->options([
+                        '1' => '✅ Activas',
+                        '0' => '❌ Inactivas',
+                    ])
+                    ->placeholder('📋 Todas las categorías')
+                    ->label('Estado de la categoría'),
+
+
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\CreateAction::make(),
+                
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

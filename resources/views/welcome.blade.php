@@ -79,11 +79,11 @@
             
             <!-- Auth Links -->
             <div class="flex items-center space-x-4">
-                <a href="#" class="text-white/80 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/10">
+                <a href="/admin/login" class="text-white/80 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/10">
                     Iniciar Sesión
                 </a>
-                <a href="#" class="bg-white text-blue-600 font-semibold px-6 py-2 rounded-lg hover:bg-gray-100 transition-colors hover-scale">
-                    Registrarse
+                <a href="/admin/login" class="bg-white text-blue-600 font-semibold px-6 py-2 rounded-lg hover:bg-gray-100 transition-colors hover-scale">
+                    Acceder al Panel
                 </a>
             </div>
         </div>
@@ -110,7 +110,7 @@
                         servicio educativo a nuestros estudiantes.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold px-8 py-4 rounded-lg hover:shadow-lg transition-all hover-scale text-center">
+                        <a href="/admin/login" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold px-8 py-4 rounded-lg hover:shadow-lg transition-all hover-scale text-center">
                             Comenzar Ahora
                         </a>
                         <a href="#features" class="glass text-white font-semibold px-8 py-4 rounded-lg hover:bg-white/20 transition-all text-center">
@@ -257,10 +257,10 @@
                     eficiente y profesional de todos los equipos del laboratorio de cómputo.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#" class="bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold px-8 py-4 rounded-lg hover:shadow-lg transition-all hover-scale">
+                    <a href="/admin/login" class="bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold px-8 py-4 rounded-lg hover:shadow-lg transition-all hover-scale">
                         Acceder al Sistema
                     </a>
-                    <a href="#" class="text-white font-semibold px-8 py-4 rounded-lg border border-white/30 hover:bg-white/10 transition-all">
+                    <a href="#features" class="text-white font-semibold px-8 py-4 rounded-lg border border-white/30 hover:bg-white/10 transition-all">
                         Conocer Más
                     </a>
                 </div>
