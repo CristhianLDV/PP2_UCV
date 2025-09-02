@@ -51,7 +51,9 @@ class CategoriasResource extends Resource
                     ->label('Activo')
                     ->default(true),
 
-                         ])
+
+                    
+                    ])
                  ])
             ]);
         
@@ -67,12 +69,14 @@ class CategoriasResource extends Resource
                     ->sortable(),
                     Tables\Columns\TextColumn::make('nombre')
                     ->label('Nombre')
+                    ->searchable()
                     ->sortable(),
                     Tables\Columns\TextColumn::make('descripcion')
                     ->label('Descripción')
                     ->sortable(),
                     Tables\Columns\TextColumn::make('codigo')
                     ->label('Código')
+                    ->searchable()
                     ->sortable(),
                     Tables\Columns\BooleanColumn::make('activo')
                     ->label('Activo')

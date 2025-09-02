@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class UbicacionesResource extends Resource
 {
     protected static ?string $model = Ubicacion::class;
+    protected static ?string $navigationLabel = 'Ubicaciones';   // Menú lateral
+    protected static ?string $pluralLabel = 'Ubicaciones';       // Títulos/pl
 
     protected static ?string $navigationIcon = 'heroicon-o-map-pin';
 
