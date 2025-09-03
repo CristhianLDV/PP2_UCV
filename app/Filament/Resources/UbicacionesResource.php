@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -26,20 +28,76 @@ class UbicacionesResource extends Resource
         return $form
             ->schema([
                 //
-            ]);
+        Card::make('Llene los campos de la ubicación')
+                //
+                ->schema([
+                         Forms\Components\Grid::make(2)
+                    ->schema([
+                Forms\Components\TextInput::make('nombre')
+                    ->label('Nombre')
+                    ->placeholder('Ingrese el nombre de la ubicación')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('descripcion')
+                    ->label('Descripción')
+                    ->placeholder('Ingrese la descripción de la ubicación')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('codigo_aula')
+                    ->label('Código')
+                    ->placeholder('Ingrese el código del aula')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('capacidad')
+                    ->label('Capacidad')
+                    ->placeholder('Ingrese la capacidad del aula')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Toggle::make('activo')
+                    ->label('Activo')
+                    ->default(true),
+                    ])
+                ])
+
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id_ubicacion')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nombre')
+                    ->label('Nombre')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('descripcion')
+                    ->label('Descripción')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('codigo_aula')
+                    ->label('Código')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('capacidad')
+                    ->label('Capacidad')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\BooleanColumn::make('activo')
+                    ->label('Activo')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

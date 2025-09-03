@@ -40,5 +40,10 @@ class Proveedor extends Model
     {
         return $this->hasMany(Componente::class, 'id_proveedor');
     }
+    public function mantenimientos()
+    {
+        return $this->hasMany(Mantenimiento::class, 'id_proveedor');
+    }
+
 
 }

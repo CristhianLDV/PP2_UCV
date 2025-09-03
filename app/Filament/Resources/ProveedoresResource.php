@@ -58,7 +58,7 @@ class ProveedoresResource extends Resource
                             ->placeholder('Ingrese la dirección del proveedor')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('ruc-dni')
+                        Forms\Components\TextInput::make('ruc_dni')
                             ->label('RUC/DNI')
                             ->placeholder('Ingrese el RUC o DNI del proveedor')
                             ->required()
