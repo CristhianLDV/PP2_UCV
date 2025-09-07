@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Card;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -95,9 +96,18 @@ class UbicacionesResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Ubicación eliminada exitosamente')
+                            ->body('La ubicación ha sido eliminada correctamente.')
+                            ->success()
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

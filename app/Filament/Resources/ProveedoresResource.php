@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Card;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -102,25 +103,31 @@ class ProveedoresResource extends Resource
                     ->label('Dirección')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('ruc-dni')
+                    Tables\Columns\TextColumn::make('ruc_dni')
                     ->label('RUC/DNI')
                     ->searchable()
                     ->sortable(),
                     Tables\Columns\BooleanColumn::make('activo')
                     ->label('Activo')
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('created_at')
-                    ->label('Fecha de creación')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
+                   
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+               Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Ubicación eliminada exitosamente')
+                            ->body('La ubicación ha sido eliminada correctamente.')
+                            ->success()
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

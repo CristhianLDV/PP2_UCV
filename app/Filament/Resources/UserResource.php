@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
@@ -82,9 +83,18 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+               Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Usuario eliminado exitosamente')
+                            ->body('El usuario ha sido eliminado correctamente.')
+                            ->success()
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
