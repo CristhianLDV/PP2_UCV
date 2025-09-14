@@ -33,11 +33,8 @@ class ComponentesResource extends Resource
                 ->schema([
                          Forms\Components\Grid::make(2)
                     ->schema([
-                Forms\Components\TextInput::make('codigo')
-                    ->label('Código')
-                    ->placeholder('Ingrese el código del componente')
-                    ->required()
-                    ->maxLength(255),
+                        // AGREGAR ESTE CAMPO - ES OBLIGATORIO
+           
                 Forms\Components\Textarea::make('nombre')
                     ->label('Nombre')
                     ->placeholder('Ingrese el nombre del componente')
@@ -75,24 +72,7 @@ class ComponentesResource extends Resource
                     ->required()
                     ->default('bueno')
                     ->placeholder('Seleccione el estado'),
-                Forms\Components\TextInput::make('stock_actual')
-                    ->label('Stock Actual')
-                    ->numeric()
-                    ->placeholder('Ingrese el stock actual del componente')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('stock_minimo') 
-                    ->label('Stock Mínimo')
-                    ->numeric()
-                    ->placeholder('Ingrese el stock mínimo del componente') 
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('precio_unitario')  
-                    ->label('Precio Unitario')
-                    ->numeric()
-                    ->placeholder('Ingrese el precio unitario del componente')
-                    ->required()
-                    ->maxLength(255),
+            
                 Forms\Components\Select::make('id_categoria')
                     ->label('Categoría')
                     ->options(
@@ -121,10 +101,6 @@ class ComponentesResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('codigo')
-                ->label('Código')
-                ->searchable()
-                ->sortable(),
                 Tables\Columns\TextColumn::make('nombre')
                 ->label('Nombre')
                 ->searchable()
@@ -148,15 +124,6 @@ class ComponentesResource extends Resource
                 Tables\Columns\TextColumn::make('estado')
                 ->label('  Estado')
                 ->searchable()
-                ->sortable(),
-                Tables\Columns\TextColumn::make('stock_actual')
-                ->label('Stock Actual')
-                ->sortable(),
-                Tables\Columns\TextColumn::make('stock_minimo')
-                ->label('Stock Mínimo')
-                ->sortable(),
-                Tables\Columns\TextColumn::make('precio_unitario')
-                ->label('Precio Unitario')
                 ->sortable(),
                 Tables\Columns\TextColumn::make('categoria.nombre')
                 ->label('Categoría')

@@ -80,9 +80,7 @@ class ProveedoresResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('id_proveedor')
-                    ->label('ID')
-                    ->sortable(),
+             
                     Tables\Columns\TextColumn::make('nombre_empresa')
                     ->label('Nombre Empresa')
                     ->searchable()

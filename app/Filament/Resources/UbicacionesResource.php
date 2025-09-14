@@ -44,11 +44,6 @@ class UbicacionesResource extends Resource
                     ->placeholder('Ingrese la descripción de la ubicación')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('codigo_aula')
-                    ->label('Código')
-                    ->placeholder('Ingrese el código del aula')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('capacidad')
                     ->label('Capacidad')
                     ->placeholder('Ingrese la capacidad del aula')
@@ -67,20 +62,13 @@ class UbicacionesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id_ubicacion')
-                    ->label('ID')
-                    ->sortable()
-                    ->searchable(),
+            
                 Tables\Columns\TextColumn::make('nombre')
                     ->label('Nombre')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descripcion')
                     ->label('Descripción')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('codigo_aula')
-                    ->label('Código')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('capacidad')

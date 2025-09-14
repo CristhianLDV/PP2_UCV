@@ -25,7 +25,7 @@ class Equipo extends Model
         'especificaciones',
         'estado',
         'valor_compra',
-        'fecha_compra',
+        'fecha_adquisicion',
         'fecha_garantia',
         'observaciones',
         'id_categoria',
@@ -36,7 +36,7 @@ class Equipo extends Model
 
     protected $casts = [
         'estado' => 'string',
-        'fecha_compra' => 'date',
+        'fecha_adquisicion' => 'date',
         'fecha_garantia' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

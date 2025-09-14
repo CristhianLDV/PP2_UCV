@@ -60,10 +60,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable(),
-
+             
             Tables\Columns\TextColumn::make('name')
                 ->label('Nombre')
                 ->searchable()
@@ -71,6 +68,11 @@ class UserResource extends Resource
 
             Tables\Columns\TextColumn::make('email')
                 ->label('Correo')
+                ->searchable()
+                ->sortable(),
+                
+            Tables\Columns\TextColumn::make('roles.name')
+                ->label('Rol')
                 ->searchable()
                 ->sortable(),
 

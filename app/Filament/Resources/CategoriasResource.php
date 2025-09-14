@@ -43,11 +43,6 @@ class CategoriasResource extends Resource
                     ->placeholder('Ingrese la descripción de la categoría')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('codigo')
-                    ->label('Código')
-                    ->placeholder('Ingrese el código de la categoría')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\Toggle::make('activo')
                     ->label('Activo')
                     ->default(true),
@@ -61,19 +56,13 @@ class CategoriasResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('id_categoria')
-                    ->label('ID')
-                    ->sortable(),
+               
                     Tables\Columns\TextColumn::make('nombre')
                     ->label('Nombre')
                     ->searchable()
                     ->sortable(),
                     Tables\Columns\TextColumn::make('descripcion')
                     ->label('Descripción')
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('codigo')
-                    ->label('Código')
-                    ->searchable()
                     ->sortable(),
                     Tables\Columns\BooleanColumn::make('activo')
                     ->label('Activo')

@@ -10,6 +10,7 @@ use App\Models\Proveedor;
 use App\Models\ubicacion;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Forms\FormsComponent;
 use Filament\Resources\Resource;
@@ -60,59 +61,54 @@ class EquiposResource extends Resource
                                     ->placeholder('Ingrese el número de serie del equipo')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('especificaciones')
+                                Forms\Components\TextArea::make('especificaciones')
                                     ->label('Especificaciones')
                                     ->placeholder('Ingrese las especificaciones del equipo')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\Toggle::make('estado')
+                                Forms\Components\Select::make('estado')
                                     ->label('Estado')
-                                    ->onColor('success')
-                                    ->offColor('danger')
-                                    ->default(true),
-                                Forms\Components\TextInput::make('valor_compra')
-                                    ->label('Valor de Compra')
-                                    ->numeric()
-                                    ->prefix('S/') // Si quieres mostrar la moneda
-                                    ->step(0.01) // Para permitir decimales
-                                    ->placeholder('Ingrese el valor de compra del equipo')
+                                    ->options([
+                                        'Asignado'   => 'Asignado',
+                                        'Disponible' => 'Disponible',
+                                        'Regular'     => 'Regular',
+                                        'Malo'        => 'Malo',
+                                        'Inoperativo' => 'Inoperativo',
+                                    ])
                                     ->required()
-                                     ->rules(['min:3', 'max:255'])
+                                    ->default('bueno')
+                                    ->placeholder('Seleccione el estado'),
+                                Forms\Components\DatePicker::make('fecha_adquisicion')
+                                    ->required(),
+                                Forms\Components\TextArea::make('observaciones')
+                                    ->label('Observaciones')
+                                    ->placeholder('Ingrese las observaciones del equipo')
+                                    ->required()
                                     ->maxLength(255),
-                                    Forms\Components\DatePicker::make('fecha_compra')
-                                        ->required(),
-                                        Forms\Components\DatePicker::make('fecha_garantia')
-                                            ->required(),
-                                            Forms\Components\TextArea::make('observaciones')
-                                                ->label('Observaciones')
-                                                ->placeholder('Ingrese las observaciones del equipo')
-                                                ->required()
-                                                ->maxLength(255),
-                                                Forms\Components\Select::make('id_categoria')
-                                                    ->required()
-                                                    ->label('Categoría')
-                                                    ->placeholder('Seleccione la categoría del equipo')
-                                                    ->options(
-                                                        // Aquí puedes agregar las opciones para el select
-                                                        Categoria::all()->pluck('nombre', 'id_categoria')
-                                                    ),
-                                                    Forms\Components\Select::make('id_ubicacion')
-                                                        ->label('Ubicación')
-                                                        ->placeholder('Seleccione la ubicación del equipo')
-                                                        ->required()
-                                                        ->options(
-                                                            Ubicacion::all()->pluck('nombre', 'id_ubicacion')
-                                                        ),
-                                                        Forms\Components\Select::make('id_proveedor')
-                                                            ->label('Proveedor')
-                                                            ->placeholder('Seleccione el proveedor del equipo')
-                                                            ->required()
-                                                            ->options(
-                                                                Proveedor::all()->pluck('nombre_empresa', 'id_proveedor')
+                                Forms\Components\Select::make('id_categoria')
+                                    ->required()
+                                    ->label('Categoría')
+                                    ->placeholder('Seleccione la categoría del equipo')
+                                    ->options(       
+                                    Categoria::all()->pluck('nombre', 'id_categoria')
+                                            ),
+                                Forms\Components\Select::make('id_ubicacion')
+                                    ->label('Ubicación')
+                                    ->placeholder('Seleccione la ubicación del equipo')
+                                    ->required()
+                                    ->options(
+                                    Ubicacion::all()->pluck('nombre', 'id_ubicacion')
+                                        ),
+                                Forms\Components\Select::make('id_proveedor')
+                                    ->label('Proveedor')
+                                    ->placeholder('Seleccione el proveedor del equipo')
+                                    ->required()
+                                    ->options(
+                                    Proveedor::all()->pluck('nombre_empresa', 'id_proveedor')
                                                             ),
-                                                        Forms\Components\Toggle::make('activo')
-                                                            ->label('Activo')
-                                                            ->default(true)
+                                Forms\Components\Toggle::make('activo')
+                                    ->label('Activo')
+                                    ->default(true)
                     ])
             ])
         ]);
@@ -123,9 +119,7 @@ class EquiposResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('id_equipo')
-                    ->label('ID')
-                    ->sortable(),
+                
                     Tables\Columns\TextColumn::make('codigo_inventario')
                     ->label('Código de Inventario')
                     ->searchable()
@@ -146,6 +140,18 @@ class EquiposResource extends Resource
                     ->label('Número de Serie')
                     ->searchable()
                     ->sortable(),
+                    Tables\Columns\TextColumn::make('especificaciones')
+                    ->label('Especificaciones')
+                    ->searchable()
+                    ->sortable(),
+                    Tables\Columns\TextColumn::make('estado')
+                    ->label('Estado')
+                    ->searchable()
+                    ->sortable(),
+                    Tables\Columns\TextColumn::make('fecha_adquisicion')
+                    ->label('Fecha de Adquisición')
+                    ->date()
+                    ->sortable(),   
                     Tables\Columns\TextColumn::make('categoria.nombre')
                     ->label('Categoría')
                     ->searchable()
@@ -158,6 +164,11 @@ class EquiposResource extends Resource
                     ->label('Proveedor')
                     ->searchable()
                     ->sortable(),
+                    Tables\Columns\BooleanColumn::make('activo')
+                    ->label('Activo')
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->sortable()
             ])
             ->filters([
                 //
