@@ -40,26 +40,26 @@ class ComponentesResource extends Resource
                     ->placeholder('Ingrese el nombre del componente')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('descripcion')
-                    ->label('Descripción')
-                    ->placeholder('Ingrese la descripción del componente')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('marca')
+                 Forms\Components\Select::make('id_marca')
                     ->label('Marca')
-                    ->placeholder('Ingrese la marca del componente')
-                    ->required()
-                    ->maxLength(255),
+                    ->relationship('marca', 'nombre') // relación definida en el modelo Marcas
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('nombre')
+                            ->label('Nombre del tipo')
+                            ->required(),
+                       
+                    ]),
                 Forms\Components\TextInput::make('modelo')
                     ->label('Modelo')
-                    ->placeholder('Ingrese el modelo del componente')
+                    ->placeholder('Ej: Inspiron, DDR4, SSD NVM')
                     ->required()
                     ->maxLength(255),   
-                Forms\Components\TextInput::make('tipo')
-                    ->label('Tipo')
-                    ->placeholder('Ingrese el tipo del componente')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\TextInput::make('serie')
+                    ->label('Número de serie')
+                    ->placeholder('Ej: SN123456789')
+                    ->maxLength(100),
               Forms\Components\Select::make('estado')
                     ->label('Estado')
                     ->options([
@@ -72,24 +72,6 @@ class ComponentesResource extends Resource
                     ->required()
                     ->default('bueno')
                     ->placeholder('Seleccione el estado'),
-            
-                Forms\Components\Select::make('id_categoria')
-                    ->label('Categoría')
-                    ->options(
-                        Categoria::all()->pluck('nombre', 'id_categoria')
-                    )
-                    ->required()
-                    ->placeholder('Seleccione la categoría del componente'),
-                Forms\Components\Select::make('id_proveedor')
-                    ->label('Proveedor')
-                    ->options(
-                        Proveedor::all()->pluck('nombre_empresa', 'id_proveedor')
-                    )
-                    ->required()
-                    ->placeholder('Seleccione el proveedor del componente'),
-                Forms\Components\Toggle::make('activo')
-                    ->label('Activo')
-                    ->default(true),
                     ])
                  ])
             ]);
@@ -105,40 +87,23 @@ class ComponentesResource extends Resource
                 ->label('Nombre')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('descripcion')
-                ->label('Descripción')
-                ->searchable()
-                ->sortable(),
-                Tables\Columns\TextColumn::make('marca')
-                ->label('Marca')
-                ->searchable()
-                ->sortable(),
                 Tables\Columns\TextColumn::make('modelo')
                 ->label('Modelo')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('tipo')
-                ->label('Tipo')
+                Tables\Columns\TextColumn::make('serie')
+                ->label('Serie')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('estado')
-                ->label('  Estado')
+                  Tables\Columns\TextColumn::make('marca.nombre')
+                ->label('Marca')
+                ->sortable()
+                ->searchable(),
+                 Tables\Columns\TextColumn::make('estado')
+                ->label('Estado')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('categoria.nombre')
-                ->label('Categoría')
-                ->searchable()
-                ->sortable(),
-                Tables\Columns\TextColumn::make('proveedor.nombre_empresa')
-                ->label('Proveedor')
-                ->searchable()
-                ->sortable(),
-                Tables\Columns\BooleanColumn
-                    ::make('activo')
-                    ->label('Activo')
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->falseIcon('heroicon-o-x-circle')
-                    ->sortable(),
+
             ])  
             ->filters([
                 //

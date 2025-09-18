@@ -34,14 +34,19 @@ class ProveedoresResource extends Resource
                 ->schema([
                          Forms\Components\Grid::make(2)
                     ->schema([
-                        Forms\Components\TextInput::make('nombre_empresa')
+                        Forms\Components\TextInput::make('nombre')
                             ->label('Nombre Empresa')
                             ->placeholder('Ingrese el nombre de la empresa')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('contacto_principal')
-                            ->label('Contacto Principal')
-                            ->placeholder('Ingrese el contacto principal del proveedor')
+                        Forms\Components\TextInput::make('ruc')
+                            ->label('RUC')
+                            ->placeholder('Ingrese el RUC del proveedor')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('direccion')
+                            ->label('Dirección')
+                            ->placeholder('Ingrese la dirección del proveedor')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('telefono')
@@ -53,22 +58,7 @@ class ProveedoresResource extends Resource
                             ->label('Email')
                             ->placeholder('Ingrese el email del proveedor')
                             ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('direccion')
-                            ->label('Dirección')
-                            ->placeholder('Ingrese la dirección del proveedor')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('ruc_dni')
-                            ->label('RUC/DNI')
-                            ->placeholder('Ingrese el RUC o DNI del proveedor')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Toggle::make('activo')
-                            ->label('Activo')
-                            ->default(true),
-
-                    
+                            ->maxLength(255)
                     ])
                  ])
             ]);
@@ -81,34 +71,26 @@ class ProveedoresResource extends Resource
             ->columns([
                 //
              
-                    Tables\Columns\TextColumn::make('nombre_empresa')
+                    Tables\Columns\TextColumn::make('nombre')
                     ->label('Nombre Empresa')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('contacto_principal')
-                    ->label('Contacto Principal')
-                    ->searchable()
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('telefono')
-                    ->label('Teléfono')
-                    ->searchable()
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('email')
-                    ->label('Email')
+                    Tables\Columns\TextColumn::make('ruc')
+                    ->label('RUC')
                     ->searchable()
                     ->sortable(),
                     Tables\Columns\TextColumn::make('direccion')
                     ->label('Dirección')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('ruc_dni')
-                    ->label('RUC/DNI')
+                    Tables\Columns\TextColumn::make('telefono')
+                    ->label('Teléfono')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\BooleanColumn::make('activo')
-                    ->label('Activo')
+                     Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable()
                     ->sortable(),
-                   
             ])
             ->filters([
                 //

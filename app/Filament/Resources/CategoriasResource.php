@@ -120,6 +120,6 @@ class CategoriasResource extends Resource
     public static function getNavigationGroup(): ?string
     {
 
-        return 'Configuracion Base';
+        return 'Inventario';
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Ubicacion extends Model
 {
     //
-    use Hasfactory,SoftDeletes;
+    use Hasfactory;
 
     protected $table = 'ubicaciones';
     protected $primaryKey = 'id_ubicacion';
@@ -18,11 +18,9 @@ class Ubicacion extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
-        'codigo_aula',
-        'capacidad',
-        'activo'
+        'activo',
+    
     ];
-
     protected $casts = [
         'activo' => 'boolean',
         'created_at' => 'datetime',
@@ -30,14 +28,6 @@ class Ubicacion extends Model
     ];
 
     // Relaciones
-    public function equipos()
-    {
-        return $this->hasMany(Equipo::class, 'id_ubicacion');
-    }
-
-    public function componentes()
-    {
-        return $this->hasMany(Componente::class, 'id_ubicacion');
-    }
+ 
 
 }

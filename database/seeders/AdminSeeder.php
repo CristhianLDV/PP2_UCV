@@ -15,6 +15,9 @@ class AdminSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'password' => bcrypt('password123'), // cámbialo luego
+                'id_area' => null,
+                
+                // Asegúrate de que esta área exista
             ]
         );
 

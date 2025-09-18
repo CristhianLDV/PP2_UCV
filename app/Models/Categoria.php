@@ -9,7 +9,7 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 
 class Categoria extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
     //
     protected $table = 'categorias';
     protected $primaryKey = 'id_categoria';
@@ -17,7 +17,6 @@ class Categoria extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
-        'codigo',
         'activo'
     ];
 
@@ -36,6 +35,11 @@ class Categoria extends Model
     public function componentes()
     {
         return $this->hasMany(Componente::class, 'id_categoria');
+    }
+
+     public function marcas()
+    {
+        return $this->hasMany(Marca::class, 'id_categoria', 'id_categoria');
     }
 
 }

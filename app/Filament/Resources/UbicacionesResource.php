@@ -14,7 +14,7 @@ use Filament\Forms\Components\Card;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class UbicacionesResource extends Resource
 {
@@ -44,14 +44,11 @@ class UbicacionesResource extends Resource
                     ->placeholder('Ingrese la descripción de la ubicación')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('capacidad')
-                    ->label('Capacidad')
-                    ->placeholder('Ingrese la capacidad del aula')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('activo')
+                 Forms\Components\Toggle::make('activo')
                     ->label('Activo')
                     ->default(true),
+                
+               
                     ])
                 ])
 
@@ -71,17 +68,14 @@ class UbicacionesResource extends Resource
                     ->label('Descripción')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('capacidad')
-                    ->label('Capacidad')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\BooleanColumn::make('activo')
+                 Tables\Columns\BooleanColumn::make('activo')
                     ->label('Activo')
                     ->sortable()
                     ->searchable(),
+      
             ])
             ->filters([
-                //
+                //ss
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
