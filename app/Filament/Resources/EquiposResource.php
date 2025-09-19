@@ -17,8 +17,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EquiposResource extends Resource
 {
@@ -35,35 +33,47 @@ class EquiposResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                             
-                                Forms\Components\TextInput::make('codigo_inventario')
-                                    ->label('Código de Inventario')
-                                    ->placeholder('Ingrese el código de inventario del equipo')
+                                Forms\Components\TextInput::make('codigo_patrimonial')
+                                    ->label('Código Patrimonial')
+                                    ->placeholder('Ingrese el código Patrimonial del equipo')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('nombre')
-                                    ->label('Nombre')
+                                Forms\Components\TextInput::make('nombre_equipo')
+                                    ->label('Nombre del Equipo')
                                     ->placeholder('Ingrese el nombre del equipo')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('marca')
+                                Forms\Components\Select::make('id_marca')
                                     ->label('Marca')
-                                    ->placeholder('Ingrese la marca del equipo')
-                                    ->required()
-                                    ->maxLength(255),
+                                    ->relationship('marca', 'nombre') // relación definida en el modelo Marcas
+                                    ->searchable()
+                                    ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('nombre')
+                                            ->label('Nombre de la marca')
+                                            ->required(),
+                                    
+                                    ]),
+                                    Forms\Components\Select::make('id_tipo_equipo')
+                                    ->label('Equipo')
+                                    ->relationship('tipo', 'nombre') // relación definida en el modelo Marcas
+                                    ->searchable()
+                                    ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('nombre')
+                                            ->label('Nombre del tipo de equipo')
+                                            ->required(),
+                                    
+                                    ]),
                                 Forms\Components\TextInput::make('modelo')
                                     ->label('Modelo')
                                     ->placeholder('Ingrese el modelo del equipo')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('numero_serie')
+                                Forms\Components\TextInput::make('serie')
                                     ->label('Número de Serie')
                                     ->numeric()
                                     ->placeholder('Ingrese el número de serie del equipo')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextArea::make('especificaciones')
-                                    ->label('Especificaciones')
-                                    ->placeholder('Ingrese las especificaciones del equipo')
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Select::make('estado')
@@ -78,37 +88,14 @@ class EquiposResource extends Resource
                                     ->required()
                                     ->default('bueno')
                                     ->placeholder('Seleccione el estado'),
-                                Forms\Components\DatePicker::make('fecha_adquisicion')
-                                    ->required(),
-                                Forms\Components\TextArea::make('observaciones')
-                                    ->label('Observaciones')
-                                    ->placeholder('Ingrese las observaciones del equipo')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\Select::make('id_categoria')
-                                    ->required()
-                                    ->label('Categoría')
-                                    ->placeholder('Seleccione la categoría del equipo')
-                                    ->options(       
-                                    Categoria::all()->pluck('nombre', 'id_categoria')
-                                            ),
-                                Forms\Components\Select::make('id_ubicacion')
-                                    ->label('Ubicación')
-                                    ->placeholder('Seleccione la ubicación del equipo')
-                                    ->required()
-                                    ->options(
-                                    Ubicacion::all()->pluck('nombre', 'id_ubicacion')
-                                        ),
-                                Forms\Components\Select::make('id_proveedor')
-                                    ->label('Proveedor')
-                                    ->placeholder('Seleccione el proveedor del equipo')
-                                    ->required()
-                                    ->options(
-                                    Proveedor::all()->pluck('nombre_empresa', 'id_proveedor')
-                                                            ),
-                                Forms\Components\Toggle::make('activo')
-                                    ->label('Activo')
-                                    ->default(true)
+                                   // 🔗 Relación con componentes (Many-to-Many)
+                            Forms\Components\Select::make('componentes')
+                                ->label('Componentes')
+                                ->multiple()
+                                ->relationship('componentes', 'nombre')
+                                ->preload()
+                                ->searchable(),
+
                     ])
             ])
         ]);
@@ -120,15 +107,19 @@ class EquiposResource extends Resource
             ->columns([
                 //
                 
-                    Tables\Columns\TextColumn::make('codigo_inventario')
-                    ->label('Código de Inventario')
+                    Tables\Columns\TextColumn::make('codigo_patrimonial')
+                    ->label('Código Patrimonial')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('nombre')
-                    ->label('Nombre')
+                    Tables\Columns\TextColumn::make('nombre_equipo')
+                    ->label('Equipo')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('marca')
+                     Tables\Columns\TextColumn::make('tipo.nombre')
+                    ->label('Marca')
+                    ->searchable()
+                    ->sortable(),
+                    Tables\Columns\TextColumn::make('marca.nombre')
                     ->label('Marca')
                     ->searchable()
                     ->sortable(),
@@ -136,39 +127,17 @@ class EquiposResource extends Resource
                     ->label('Modelo')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('numero_serie')
+                    Tables\Columns\TextColumn::make('serie')
                     ->label('Número de Serie')
-                    ->searchable()
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('especificaciones')
-                    ->label('Especificaciones')
                     ->searchable()
                     ->sortable(),
                     Tables\Columns\TextColumn::make('estado')
                     ->label('Estado')
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('fecha_adquisicion')
-                    ->label('Fecha de Adquisición')
-                    ->date()
-                    ->sortable(),   
-                    Tables\Columns\TextColumn::make('categoria.nombre')
-                    ->label('Categoría')
-                    ->searchable()
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('ubicacion.nombre')
-                    ->label('Ubicación')
-                    ->searchable()
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('proveedor.nombre_empresa')
-                    ->label('Proveedor')
-                    ->searchable()
-                    ->sortable(),
-                    Tables\Columns\BooleanColumn::make('activo')
-                    ->label('Activo')
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->falseIcon('heroicon-o-x-circle')
-                    ->sortable()
+                    Tables\Columns\BadgeColumn::make('componentes_count')
+                    ->counts('componentes')
+                    ->label('N° Componentes'),
             ])
             ->filters([
                 //

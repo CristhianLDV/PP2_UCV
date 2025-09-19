@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipos_equipos', function (Blueprint $table) {
-            $table->id('id_tipo_equipo');
+             $table->bigIncrements('id_tipo_equipo');
             $table->string('nombre', 255)->unique();
-            $table->foreignId('id_categoria')->nullable()->constrained(
-                table: 'categorias',
-                column: 'id_categoria'
-            )->onDelete('set null');
+
+            // Clave foránea hacia categorias
+            $table->unsignedBigInteger('id_categoria')->nullable();
+            $table->foreign('id_categoria')
+                  ->references('id_categoria')
+                  ->on('categorias')
+                  ->onDelete('set null'); // Si eliminas la categoría, se pone NULL
             $table->timestamps();
         });
     }

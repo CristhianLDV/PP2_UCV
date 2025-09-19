@@ -34,5 +34,16 @@ public function marca()
 {
     return $this->belongsTo(Marca::class, 'id_marca', 'id_marca');
 }
+ public function equipos()
+    {
+        return $this->belongsToMany(
+            Equipo::class,
+            'equipo__componente',
+            'id_componente',
+            'id_equipo'
+        )->withPivot(['fecha_asignacion', 'fecha_retiro'])
+         ->withTimestamps();
+    }
+
 
 }

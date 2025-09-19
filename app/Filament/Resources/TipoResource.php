@@ -19,6 +19,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class TipoResource extends Resource
 {
     protected static ?string $model = Tipo::class;
+    protected static ?string $navigationLabel = 'Tipos de Equipo';   // Menú lateral
+    protected static ?string $pluralLabel = 'Tipos de Equipo';       // Títulos/plural
+    protected static ?string $modelLabel = 'Tipos de Equipo';         // Singular
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
 
@@ -26,7 +29,7 @@ class TipoResource extends Resource
     {
         return $form
              ->schema([
-                 Card::make('Llene los campos de la categoría')
+                 Card::make('Llene los campos del tipo de equipo')
                 //
                 ->schema([
                          Forms\Components\Grid::make(2)
@@ -38,11 +41,21 @@ class TipoResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('id_categoria')
                     ->label('Categoria')
+                    ->relationship('categoria', 'nombre')
+                    ->searchable()
                     ->placeholder('Seleccione la Categoria del equipo')
-                    ->required()
-                    ->options(
-                     Categoria::all()->pluck('nombre', 'id_categoria')
-                    )
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('nombre')
+                            ->label('Nombre de la categoria')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('descripcion')
+                            ->label('Descripcion de la categoria')
+                            ->maxLength(255),
+                    ]),
+        
+               
                                 
                     ])
                  ])
@@ -76,8 +89,8 @@ class TipoResource extends Resource
                     ->color('danger')
                     ->successNotification(
                         Notification::make()
-                            ->title('Ubicación eliminada exitosamente')
-                            ->body('La ubicación ha sido eliminada correctamente.')
+                            ->title('Tipos de Equipo eliminado exitosamente')
+                            ->body('El Tipos de Equipo ha sido eliminada correctamente.')
                             ->success()
                     ),
             ])

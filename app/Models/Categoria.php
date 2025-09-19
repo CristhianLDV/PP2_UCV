@@ -27,14 +27,18 @@ class Categoria extends Model
     ];
 
     // Relaciones
+     public function tipos()
+    {
+    return $this->hasMany(Tipo::class, 'id_categoria', 'id_categoria');
+    }
     public function equipos()
     {
-        return $this->hasMany(Equipo::class, 'id_categoria');
+        return $this->hasMany(Equipo::class, 'id_categoria', 'id_categoria');
     }
 
     public function componentes()
     {
-        return $this->hasMany(Componente::class, 'id_categoria');
+        return $this->hasMany(Componente::class, 'id_categoria', 'id_categoria');
     }
 
      public function marcas()

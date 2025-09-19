@@ -11,38 +11,54 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 class Equipo extends Model
 {
     //
-    use HasFactory,SoftDeletes;
+    use HasFactory;
 
     protected $table = 'equipos';
     protected $primaryKey = 'id_equipo';
 
     protected $fillable = [
-        'codigo_inventario',
-        'nombre',
-        'marca',
+       'codigo_patrimonial',
+        'nombre_equipo',
+        'id_tipo_equipo',
+        'id_marca',
         'modelo',
-        'numero_serie',
-        'especificaciones',
+        'serie',
         'estado',
-        'valor_compra',
-        'fecha_adquisicion',
-        'fecha_garantia',
-        'observaciones',
-        'id_categoria',
+        'id_usuario',
         'id_ubicacion',
-        'id_proveedor',
-        'activo'
     ];
 
     protected $casts = [
-        'estado' => 'string',
-        'fecha_adquisicion' => 'date',
-        'fecha_garantia' => 'date',
+       
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     // Relaciones
+
+
+
+        public function marca()
+    {
+        return $this->belongsTo(Marca::class, 'id_marca', 'id_marca');
+    }
+
+    public function componentes()
+    {
+        return $this->belongsToMany(
+            Componente::class,
+            'equipo__componente',
+            'id_equipo',
+            'id_componente'
+        )->withPivot(['fecha_asignacion', 'fecha_retiro'])
+         ->withTimestamps();
+    }
+     public function tipo()
+    {
+        return $this->belongsTo(Tipo::class,  'id_tipo_equipo','id_tipo_equipo'); 
+        
+    }
+
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'id_categoria');

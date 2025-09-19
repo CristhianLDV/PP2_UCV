@@ -23,8 +23,8 @@ class CreateTipo extends CreateRecord
     protected function afterCreate(): void
     {
         Notification::make()
-            ->title('Área creada exitosamente')
-            ->body('La área ha sido creada correctamente.')
+            ->title('Tipos de Equipo creado exitosamente')
+            ->body('El Tipos de Equipo ha sido creada correctamente.')
             ->success()
             ->send();
     }

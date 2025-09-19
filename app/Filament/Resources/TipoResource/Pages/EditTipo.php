@@ -23,8 +23,8 @@ class EditTipo extends EditRecord
     protected function afterSave()
     {
         Notification::make()
-            ->title('Marca actualizado exitosamente')
-            ->body('La Marca ha sido actualizado correctamente.')
+            ->title('Tipos de Equipo actualizado exitosamente')
+            ->body('El Tipos de Equipo ha sido actualizado correctamente.')
             ->success()
             ->send();
     }
@@ -34,8 +34,8 @@ class EditTipo extends EditRecord
             Actions\DeleteAction::make()
                 ->successNotification(
                     Notification::make()
-                        ->title('Marca eliminado exitosamente')
-                        ->body('La Marca ha sido eliminado correctamente.')
+                        ->title('Tipos de Equipo eliminado exitosamente')
+                        ->body('El Tipos de Equipo ha sido eliminado correctamente.')
                         ->success()
 
                 ),
