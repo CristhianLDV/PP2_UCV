@@ -20,7 +20,10 @@ class Area extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
+    public function asignaciones()
+    {
+        return $this->hasMany(Asignacion::class, 'id_area');
+    }
 
 
 }

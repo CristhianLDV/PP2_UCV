@@ -23,7 +23,7 @@ class TipoResource extends Resource
     protected static ?string $pluralLabel = 'Tipos de Equipo';       // Títulos/plural
     protected static ?string $modelLabel = 'Tipos de Equipo';         // Singular
 
-    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+    protected static ?string $navigationIcon = 'heroicon-o-server';
 
     public static function form(Form $form): Form
     {

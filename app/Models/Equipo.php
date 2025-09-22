@@ -36,7 +36,13 @@ class Equipo extends Model
 
     // Relaciones
 
-
+ /**
+     * Relación polimórfica: asignaciones
+     */
+    public function asignaciones()
+    {
+        return $this->morphMany(Asignacion::class, 'asignable');
+    }
 
         public function marca()
     {

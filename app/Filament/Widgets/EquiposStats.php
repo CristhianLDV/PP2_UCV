@@ -16,7 +16,7 @@ class EquiposStats extends BaseWidget
         return [
             //
 
-            /* Stat::make('Usuarios', User::count())
+             Stat::make('Usuarios', User::count())
                 ->description('Total de usuarios registrados')
                 ->descriptionIcon('heroicon-o-users')
                 ->color('primary'),
@@ -31,9 +31,8 @@ class EquiposStats extends BaseWidget
             Stat::make('Núevos Componentes', Componente::count())
                 ->description('Total de componentes registrados')
                 ->descriptionIcon('heroicon-o-cog')
-                ->color('warning'), */
-            
-
+                ->color('warning'),
+        
         ];
     }
 }

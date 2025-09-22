@@ -17,6 +17,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ComponentesImport;
+use Filament\Tables\Actions\Action;
 
 class ComponentesResource extends Resource
 {
@@ -123,6 +126,32 @@ class ComponentesResource extends Resource
                     ),
 
             ])
+       /*      ->headerActions([
+            Action::make('importar')
+                ->label('Importar Componentes')
+                ->icon('heroicon-o-arrow-up-tray')
+                ->form([
+                    Forms\Components\FileUpload::make('archivo')
+                        ->label('Archivo Excel/CSV')
+                        ->required()
+                        ->storeFiles(false) // 👈 evita que se guarde en storage
+                        ->acceptedFileTypes([
+                            'text/csv',
+                            'application/vnd.ms-excel',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        ]),
+                ])
+                ->action(function (array $data) {
+                    Excel::import(new ComponentesImport, $data['archivo']->getRealPath());
+
+                    Notification::make()
+                        ->title('Importación exitosa')
+                        ->body('Se han importado los componentes correctamente.')
+                        ->success()
+                        ->send();
+                }),
+        ])  */
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

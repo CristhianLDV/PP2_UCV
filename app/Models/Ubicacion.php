@@ -28,6 +28,9 @@ class Ubicacion extends Model
     ];
 
     // Relaciones
- 
+    public function asignaciones()
+    {
+        return $this->hasMany(Asignacion::class, 'id_ubicacion');
+    }
 
 }

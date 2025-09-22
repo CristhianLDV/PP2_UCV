@@ -44,6 +44,12 @@ public function marca()
         )->withPivot(['fecha_asignacion', 'fecha_retiro'])
          ->withTimestamps();
     }
-
+    /**
+     * Relación polimórfica: asignaciones
+     */
+    public function asignaciones()
+    {
+        return $this->morphMany(Asignacion::class, 'asignable');
+    }
 
 }
